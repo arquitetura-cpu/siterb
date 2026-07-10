@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruan Braga | Willker Alcântara Arquitetura</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Montserrat:wght@200;300;400;500;600&family=Poiret+One&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIÁVEIS --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #666;
+            --light-gray: #f9f9f9;
+            --font-heading: 'Montserrat', sans-serif;
+            --font-highlight: 'Poiret One', cursive;
+            --font-body: 'Lato', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; cursor: pointer; }
+        ul { list-style: none; }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 5%;
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.4s ease;
+        }
+
+        @media screen and (min-width: 769px) {
+            .navbar.scrolled {
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid transparent;
+                padding: 1rem 5%;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+            .navbar.scrolled:hover {
+                background: rgba(255, 255, 255, 1);
+                backdrop-filter: none;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .logo img { height: 48px; width: auto; display: block; }
+
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 500; }
+        .nav-links a:hover { color: #888; }
+
+        .highlight-btn {
+            border: 1px solid #000;
+            padding: 8px 20px;
+            transition: 0.3s;
+        }
+        .highlight-btn:hover {
+            background-color: #000;
+            color: #fff !important;
+        }
+
+        .burger { display: none; cursor: pointer; }
+
+        /* MAIN CONTENT */
+        #main-content { display: block; width: 100%; }
+
+        /* HERO */
+        .hero { height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .hero-slider { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center center; opacity: 0; animation: fadeLoop 25s infinite; }
+        .slide:nth-child(1) { animation-delay: 0s; }
+        .slide:nth-child(2) { animation-delay: 5s; }
+        .slide:nth-child(3) { animation-delay: 10s; }
+        .slide:nth-child(4) { animation-delay: 15s; }
+        .slide:nth-child(5) { animation-delay: 20s; }
+        @keyframes fadeLoop {
+            0% { opacity: 0; transform: scale(1); }
+            4% { opacity: 1; }
+            20% { opacity: 1; transform: scale(1.05); }
+            24% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; text-align: center; color: white; }
+        .hero-content h1 { font-family: var(--font-highlight); font-size: 4.5rem; font-weight: 400; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 0.5rem; }
+        .hero-content p { font-family: var(--font-heading); font-weight: 300; letter-spacing: 3px; font-size: 0.9rem; text-transform: uppercase; }
+        .scroll-down { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3; cursor: pointer; }
+        .scroll-down span { display: block; width: 20px; height: 20px; border-bottom: 2px solid #fff; border-right: 2px solid #fff; transform: rotate(45deg); margin: -10px; animation: scrollAnimate 2s infinite; }
+        .scroll-down span:nth-child(2) { animation-delay: -0.2s; }
+        .scroll-down span:nth-child(3) { animation-delay: -0.4s; }
+        @keyframes scrollAnimate { 0% { opacity: 0; transform: rotate(45deg) translate(-20px, -20px); } 50% { opacity: 1; } 100% { opacity: 0; transform: rotate(45deg) translate(20px, 20px); } }
+
+        /* PROJETOS (HOME) */
+        .projects { padding: 8rem 5% 6rem 5%; }
+        .section-header { margin-bottom: 5rem; text-align: center; }
+        .section-header h2 { font-family: var(--font-highlight); font-weight: 600; text-transform: uppercase; letter-spacing: 3px; font-size: 2.5rem; }
+        .view-all-link { display: block; margin-top: 1rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); text-decoration: underline; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 4rem; }
+        .project-item { cursor: pointer; }
+        .img-container { width: 100%; height: 450px; overflow: hidden; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); filter: grayscale(10%); }
+        .project-item:hover .img-container img { transform: scale(1.05); filter: grayscale(0%); }
+        .project-info { padding: 1.5rem 0; text-align: left; }
+        .project-info h3 { font-family: var(--font-heading); font-weight: 500; text-transform: uppercase; letter-spacing: 2px; font-size: 1.1rem; }
+        .project-info p { color: #888; font-size: 0.8rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- STUDIO --- */
+        .about { background-color: var(--light-gray); padding: 8rem 0; text-align: center; overflow: hidden; }
+        .about-content { padding: 0 18%; margin-bottom: 4rem; }
+        .about h2 { font-family: var(--font-highlight); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 2rem; }
+        .about-columns { display: flex; gap: 3rem; }
+        .about-columns p { font-size: 1rem; color: #444; font-weight: 300; text-align: justify; margin: 0; flex: 1; }
+
+        /* Foto da equipe */
+        .team-photo-wrapper {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .team-photo-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: grayscale(30%);
+            transform: scale(1);
+            transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 1.2s ease;
+        }
+        .team-photo-wrapper.will-animate img {
+            opacity: 0;
+            transform: scale(1.06);
+            filter: grayscale(100%);
+            transition: opacity 1.2s ease, transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 1.4s ease;
+        }
+        .team-photo-wrapper.will-animate.revealed img {
+            opacity: 1;
+            transform: scale(1);
+            filter: grayscale(20%);
+        }
+        .team-photo-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--light-gray);
+            transform: scaleX(1);
+            transform-origin: left;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .team-photo-wrapper.revealed::after {
+            transform: scaleX(0);
+            transform-origin: right;
+        }
+        .team-photo-caption {
+            position: absolute;
+            bottom: 2rem;
+            right: 2.5rem;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.7);
+            z-index: 2;
+        }
+
+        /* PINTEREST */
+        .pinterest-section { background-color: var(--light-gray); padding: 5rem 5%; text-align: center; }
+        .pinterest-label { font-family: var(--font-heading); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 4px; color: #999; margin-bottom: 1rem; }
+        .pinterest-handle { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-size: 1.8rem; font-weight: 300; letter-spacing: 1px; color: #111; margin-bottom: 3rem; transition: color 0.3s; }
+        .pinterest-handle svg { flex-shrink: 0; }
+        .pinterest-handle:hover { color: #555; }
+        .pinterest-widget-wrap { width: 100%; max-width: 1300px; margin: 0 auto 3rem auto; overflow: hidden; }
+        .pinterest-widget-wrap a[data-pin-do] { display: block; }
+        .pinterest-btn { display: inline-block; border: 1px solid #222; padding: 0.9rem 2.5rem; font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: #222; transition: 0.3s; }
+        .pinterest-btn:hover { background: #222; color: #fff; }
+
+        /* CONTATO */
+        .contact-section {
+            padding: 6rem 5%;
+            min-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            position: relative;
+        }
+        .watermark-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            display: block;
+        }
+        .contact-desktop { display: flex; width: 90%; max-width: 1200px; justify-content: space-between; position: relative; z-index: 1; }
+        .contact-info { width: 40%; }
+        .contact-info h2 { font-family: var(--font-highlight); font-size: 2.5rem; text-transform: uppercase; margin-bottom: 2rem; }
+        .info-block, .address-block, .social-block { margin-bottom: 3rem; }
+        .address-block h4, .social-block h4 { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: #999; }
+        .address-block p { color: #333; font-size: 1rem; font-weight: 300; }
+        .map-link { display: inline-block; margin-top: 1rem; font-size: 0.8rem; border-bottom: 1px solid #000; padding-bottom: 3px; text-transform: uppercase; letter-spacing: 1px; }
+        .social-links a { display: inline-block; margin-right: 20px; font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid transparent; }
+        .social-links a:hover { border-bottom: 1px solid #000; }
+        .contact-form { width: 45%; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 1rem 0; margin-bottom: 2rem; border: none; border-bottom: 1px solid #ddd; font-family: var(--font-heading); font-weight: 300; font-size: 0.9rem; outline: none; background: transparent; transition: 0.3s; }
+        .contact-form input:focus, .contact-form textarea:focus { border-bottom: 1px solid #000; }
+        .contact-form button { background: transparent; border: 1px solid #000; padding: 1.2rem 4rem; cursor: pointer; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; transition: 0.3s; }
+        .contact-form button:hover { background: #000; color: #fff; }
+        .contact-mobile { display: none; }
+
+        /* ORÇAMENTO */
+        #budget-view { padding-top: 120px; background-color: #fff; min-height: 100vh; display: none; animation: fadeIn 0.5s ease-out; }
+        .budget-container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 5%; text-align: center; }
+        .iframe-wrapper { position: relative; width: 100%; height: 1600px; overflow: hidden; margin-bottom: 4rem; background: #fff; }
+        .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* PORTFÓLIO FULL */
+        #portfolio-view { padding-top: 120px; background-color: #fff; min-height: 100vh; animation: fadeIn 0.5s ease-out; display: none; position: relative; }
+        #portfolio-view .watermark-bg { opacity: 0.7; }
+        .all-projects-header { text-align: center; margin-bottom: 5rem; }
+        .all-projects-header h1 { font-family: var(--font-highlight); font-size: 3rem; text-transform: uppercase; letter-spacing: 5px; }
+        .all-projects-header p { font-family: var(--font-heading); font-weight: 300; text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; color: #888; margin-top: 10px; }
+        .all-projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem 2rem; padding: 0 5% 6rem 5%; max-width: 1600px; margin: 0 auto; }
+        .project-card { cursor: pointer; text-align: center; }
+        .card-img { width: 100%; height: 350px; overflow: hidden; margin-bottom: 1.5rem; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); filter: grayscale(10%); }
+        .project-card:hover .card-img img { transform: scale(1.05); filter: grayscale(0%); }
+        .project-card h3 { font-family: var(--font-heading); font-weight: 400; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; color: #333; }
+        .all-projects-footer { text-align: center; padding-bottom: 6rem; }
+        .back-home-btn { background: none; border: 1px solid #ddd; padding: 1rem 3rem; cursor: pointer; font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .back-home-btn:hover { border-color: #000; background: #000; color: #fff; }
+
+        /* DETALHES */
+        #project-page { display: none; background: #fff; min-height: 100vh; width: 100%; position: relative; z-index: 1050; padding-top: 80px; }
+        #project-page .watermark-bg { opacity: 0.7; z-index: 1051; }
+        .project-split-wrapper { display: flex; width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 5%; gap: 5%; }
+        .project-info-sticky { width: 35%; height: fit-content; position: sticky; top: 120px; padding-bottom: 4rem; }
+        .project-gallery-scroll { width: 60%; display: flex; flex-direction: column; gap: 2rem; padding-bottom: 6rem; }
+        .project-gallery-scroll img { width: 100%; height: auto; display: block; object-fit: cover; animation: fadeInImg 0.8s ease-out; }
+        @keyframes fadeInImg { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .back-btn-minimal { background: none; border: none; cursor: pointer; font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #999; margin-bottom: 3rem; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .back-btn-minimal:hover { color: #000; gap: 5px; }
+        .project-info-sticky h1 { font-family: var(--font-highlight); font-size: 3.5rem; font-weight: 400; text-transform: uppercase; line-height: 1.1; margin-bottom: 2rem; color: #000; }
+        .project-meta-grid { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem; border-top: 1px solid #eee; padding-top: 2rem; }
+        .meta-item { display: grid; grid-template-columns: 80px 1fr; align-items: baseline; }
+        .meta-item .label { font-family: var(--font-heading); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #999; }
+        .meta-item .value { font-family: var(--font-body); font-size: 0.95rem; color: #333; }
+        .project-description { font-family: var(--font-body); font-size: 1rem; line-height: 1.8; color: #555; font-weight: 300; text-align: justify; }
+
+        @media screen and (max-width: 1024px) {
+            .all-projects-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media screen and (max-width: 768px) {
+            .about-columns { flex-direction: column; }
+            .about-content { padding: 0 8%; }
+            .navbar { padding: 1.5rem 5%; }
+            .logo img { height: 36px; }
+            .nav-links { position: absolute; right: 0; height: 92vh; top: 8vh; background-color: #fff; display: flex; flex-direction: column; align-items: center; width: 100%; transform: translateX(100%); transition: 0.5s; padding-top: 4rem; }
+            .nav-links.nav-active { transform: translateX(0%); }
+            .burger { display: block; }
+            .burger div { width: 25px; height: 2px; background: #000; margin: 5px; }
+            .hero-content h1 { font-size: 2.5rem; letter-spacing: 2px; }
+            .contact-desktop { display: none; }
+            .contact-mobile { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; text-align: center; margin: 0 auto; position: relative; z-index: 1; }
+            .contact-section { background-color: #f4f4f4; padding-top: 6rem; align-items: flex-start; }
+            .profile-pic img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid #e0e0e0; margin-bottom: 1rem; }
+            .bio-links { width: 100%; display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+            .bio-btn { display: block; width: 100%; padding: 1rem; background: #fff; color: #000; border: 1px solid #ddd; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+            .all-projects-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .project-split-wrapper { flex-direction: column; }
+            .project-info-sticky { width: 100%; position: relative; top: 0; margin-bottom: 3rem; }
+            .project-gallery-scroll { width: 100%; }
+            .project-info-sticky h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="logo" onclick="resetToTop()" style="cursor: pointer;">
+            <img src="logo-atualizada-preta.png" alt="Ruan Braga Arquitetura">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="javascript:void(0)" onclick="resetToTop()">Home</a></li>
+            <li><a href="javascript:void(0)" onclick="showPortfolio()">Projetos</a></li>
+            <li><a href="javascript:void(0)" onclick="goToSection('sobre')">Studio</a></li>
+            <li><a href="javascript:void(0)" onclick="showBudget()" class="highlight-btn">Orçamento</a></li>
+            <li><a href="javascript:void(0)" onclick="goToSection('contato')">Contato</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+        <!-- Hero -->
+        <section id="home" class="hero">
+            <div class="hero-slider">
+                <div class="slide" style="background-image: url('banner1.webp');"></div>
+                <div class="slide" style="background-image: url('banner2.webp');"></div>
+                <div class="slide" style="background-image: url('banner3.webp');"></div>
+                <div class="slide" style="background-image: url('banner4.webp');"></div>
+                <div class="slide" style="background-image: url('banner5.webp');"></div>
+            </div>
+            <div class="hero-content">
+                <h1>Essência e Matéria</h1>
+                <p>Arquitetura contemporânea de alto padrão.</p>
+            </div>
+            <a href="javascript:void(0)" onclick="goToSection('projetos-destaque')" class="scroll-down"><span></span><span></span><span></span></a>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <!-- Destaques -->
+        <section id="projetos-destaque" class="projects">
+            <div class="section-header">
+                <h2>Projetos Selecionados</h2>
+                <a href="javascript:void(0)" onclick="showPortfolio()" class="view-all-link">Ver portfólio completo &rarr;</a>
+            </div>
+            <div class="project-grid">
+                <div class="project-item" onclick="openProject(1)">
+                    <div class="img-container"><img src="casafa1.webp" alt="Casa F_A"></div>
+                    <div class="project-info"><h3>Casa F_A</h3><p>Brasília, DF</p></div>
+                </div>
+                <div class="project-item" onclick="openProject(2)">
+                    <div class="img-container"><img src="apsf1.webp" alt="Apartamento S_F"></div>
+                    <div class="project-info"><h3>Apartamento S_F</h3><p>Brasília, DF</p></div>
+                </div>
+                <div class="project-item" onclick="openProject(3)">
+                    <div class="img-container"><img src="nero1.webp" alt="Casa Nero"></div>
+                    <div class="project-info"><h3>Casa Nero</h3><p>Lago Sul, DF</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Studio -->
+        <section id="sobre" class="about">
+            <div class="about-content">
+                <h2>O Studio</h2>
+                <div class="about-columns">
+                    <p>Ruan Braga Arquitetura é uma empresa que se dedica a criar projetos únicos e personalizados, que representem a essência de cada cliente. Com um olhar atento às necessidades de cada projeto, o escritório oferece soluções arquitetônicas e de interiores em diferentes estilos, sempre utilizando materiais de alta qualidade e tecnologia avançada.</p>
+                    <p>O compromisso do escritório é oferecer um serviço de excelência, que vá além das expectativas dos clientes e que transforme seus sonhos em realidade. Para a equipe da Ruan Braga Arquitetura, a arquitetura é muito mais do que construir espaços, é criar ambientes que expressem sentimentos e valores, que transmitam personalidade e que proporcionem bem-estar e conforto.</p>
+                </div>
+            </div>
+
+            <!-- Foto da equipe -->
+            <div class="team-photo-wrapper">
+                <img src="equipe.webp" alt="Equipe Ruan Braga | Willker Alcântara Arquitetura">
+                <p class="team-photo-caption">Nossa Equipe</p>
+            </div>
+        </section>
+
+        <!-- Contato -->
+        <section id="contato" class="contact-section">
+            <img src="logofundo.png" alt="" class="watermark-bg">
+            <div class="contact-desktop">
+                <div class="contact-info">
+                    <h2>Fale Conosco</h2>
+                    <p>Para novos projetos e consultorias.</p>
+                    <div class="info-block">
+                        <a href="mailto:arquitetura@ruanbraga.com" class="minimal-link">arquitetura@ruanbraga.com</a>
+                        <p><a href="https://wa.me/5561991235589" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid #ccc;">+55 61 99123-5589</a></p>
+                    </div>
+                    <div class="info-block">
+                        <h4>Social</h4>
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/ruanbraga.arq/" target="_blank">Instagram</a>
+                            <a href="https://www.youtube.com/@ruanbragaarquitetura" target="_blank">YouTube</a>
+                            <a href="https://br.pinterest.com/ruanbragaarq/" target="_blank">Pinterest</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form action="https://formspree.io/f/mbdvvlvy" method="POST" id="contact-form">
+                        <input type="text" name="nome" placeholder="NOME" required>
+                        <input type="email" name="email" placeholder="EMAIL" required>
+                        <textarea name="mensagem" placeholder="MENSAGEM" rows="4"></textarea>
+                        <button type="submit" id="submit-btn">ENVIAR</button>
+                    </form>
+                    <p id="form-success" style="display:none; font-family: var(--font-heading); font-size: 0.85rem; letter-spacing: 2px; color: #555; margin-top: 1rem;">Mensagem enviada. Em breve entraremos em contato.</p>
+                </div>
+            </div>
+            <div class="contact-mobile">
+                <div class="bio-header">
+                    <div class="profile-pic">
+                        <img src="https://ui-avatars.com/api/?name=Ruan+Willker&background=000&color=fff&size=150&font-size=0.4" alt="Ruan e Willker">
+                    </div>
+                    <h3 style="line-height: 1.4;">RUAN BRAGA <br> WILLKER ALCÂNTARA</h3>
+                    <p style="letter-spacing: 2px; font-size: 0.8rem; margin-top: 5px;">ARQUITETURA</p>
+                </div>
+                <div class="bio-links">
+                    <a href="https://wa.me/5561991235589" target="_blank" class="bio-btn">Solicitar Orçamento (WhatsApp)</a>
+                    <a href="javascript:void(0)" onclick="showPortfolio()" class="bio-btn">Ver Portfólio Completo</a>
+                    <a href="mailto:arquitetura@ruanbraga.com" class="bio-btn outline">Enviar E-mail</a>
+                    <a href="https://www.instagram.com/ruanbraga.arq/" target="_blank" class="bio-btn">Instagram</a>
+                    <a href="https://br.pinterest.com/ruanbragaarq/" target="_blank" class="bio-btn">Pinterest</a>
+                    <a href="https://www.youtube.com/@ruanbragaarquitetura" target="_blank" class="bio-btn">YouTube</a>
+                </div>
+                <footer class="bio-footer"><p>© 2025 Ruan Braga | Willker Alcântara Arquitetura</p></footer>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- ORÇAMENTO -->
+    <section id="budget-view" style="display: none;">
+        <div class="all-projects-header">
+            <h1>Solicitar Orçamento</h1>
+            <p>Preencha os dados abaixo para iniciarmos seu projeto</p>
+        </div>
+        <div class="budget-container">
+            <div class="iframe-wrapper">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdzhiAP9mOmPSCkiyWP09gBg32_iEprIk2Vvh2-srMs9SOuXQ/viewform?embedded=true">Carregando…</iframe>
+            </div>
+        </div>
+        <div class="all-projects-footer">
+            <button onclick="resetToTop()" class="back-home-btn">Voltar para Home</button>
+        </div>
+    </section>
+
+    <!-- PORTFÓLIO -->
+    <section id="portfolio-view" style="display: none;">
+        <img src="logofundo.png" alt="" class="watermark-bg">
+        <div class="all-projects-header" style="position: relative; z-index: 1;">
+            <h1>Portfólio</h1>
+        </div>
+        <div class="all-projects-grid" style="position: relative; z-index: 1;">
+            <div class="project-card" onclick="openProject(1)">
+                <div class="card-img"><img src="casafa1.webp" alt="Casa F_A"></div>
+                <h3>Casa F_A</h3>
+            </div>
+            <div class="project-card" onclick="openProject(2)">
+                <div class="card-img"><img src="apsf1.webp" alt="Apartamento S_F"></div>
+                <h3>Apartamento S_F</h3>
+            </div>
+            <div class="project-card" onclick="openProject(3)">
+                <div class="card-img"><img src="nero1.webp" alt="Casa Nero"></div>
+                <h3>Casa Nero</h3>
+            </div>
+            <div class="project-card" onclick="openProject(4)">
+                <div class="card-img"><img src="varanda-1.webp" alt="Casa R_V"></div>
+                <h3>Casa R_V</h3>
+            </div>
+            <div class="project-card" onclick="openProject(5)">
+                <div class="card-img"><img src="casa-lg-2.webp" alt="Casa L_G"></div>
+                <h3>Casa L_G</h3>
+            </div>
+            <div class="project-card" onclick="openProject(6)">
+                <div class="card-img"><img src="casa-cr-3.webp" alt="Casa C_R"></div>
+                <h3>Casa C_R</h3>
+            </div>
+            <div class="project-card" onclick="openProject(7)">
+                <div class="card-img"><img src="01scene-12-1.webp" alt="Casa P_M"></div>
+                <h3>Casa P_M</h3>
+            </div>
+            <div class="project-card" onclick="openProject(8)">
+                <div class="card-img"><img src="spaa-3.webp" alt="Spa R_T"></div>
+                <h3>Spa R_T</h3>
+            </div>
+            <div class="project-card" onclick="openProject(9)">
+                <div class="card-img"><img src="guartia-1.webp" alt="Guarita 05_27"></div>
+                <h3>Guarita 05_27</h3>
+            </div>
+        </div>
+        <div class="all-projects-footer" style="position: relative; z-index: 1;">
+            <button onclick="resetToTop()" class="back-home-btn">Voltar para Home</button>
+        </div>
+    </section>
+
+    <!-- DETALHES -->
+    <section id="project-page" class="project-page-container">
+        <img src="logofundo.png" alt="" class="watermark-bg">
+        <div class="project-split-wrapper" style="position: relative; z-index: 1052;">
+            <aside class="project-info-sticky">
+                <button onclick="closeProject()" class="back-btn-minimal"><span>&larr;</span> Voltar</button>
+                <div class="sticky-content">
+                    <h1 id="p-title">NOME DO PROJETO</h1>
+                    <div class="project-meta-grid">
+                        <div class="meta-item"><span class="label">Ano</span><span class="value" id="p-year"></span></div>
+                        <div class="meta-item"><span class="label">Área</span><span class="value" id="p-area"></span></div>
+                        <div class="meta-item"><span class="label">Local</span><span class="value" id="p-local"></span></div>
+                    </div>
+                    <div class="project-description"><p id="p-desc"></p></div>
+                </div>
+            </aside>
+            <div class="project-gallery-scroll" id="p-gallery"></div>
+        </div>
+    </section>
+
+    <script>
+        /* --- REVEAL FOTO DA EQUIPE --- */
+        const teamPhoto = document.querySelector('.team-photo-wrapper');
+        if (teamPhoto) {
+            teamPhoto.classList.add('will-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => { teamPhoto.classList.add('revealed'); }, 80);
+                        observer.unobserve(teamPhoto);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+            observer.observe(teamPhoto);
+        }
+
+        /* --- FORMULÁRIO DE CONTATO --- */
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('submit-btn');
+                btn.textContent = 'ENVIANDO...';
+                btn.disabled = true;
+                const data = new FormData(contactForm);
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    contactForm.style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                } else {
+                    btn.textContent = 'ENVIAR';
+                    btn.disabled = false;
+                    alert('Erro ao enviar. Tente novamente.');
+                }
+            });
+        }
+
+        /* --- MENU TRANSPARENTE --- */
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) { navbar.classList.add('scrolled'); }
+            else { navbar.classList.remove('scrolled'); }
+        });
+
+        /* --- DADOS --- */
+        const projectsData = [
+            { id: 1, title: "Casa F_A", year: "2025", area: "1155m²", local: "Brasília, DF", desc: "Uma residência de alto padrão, onde as linhas geométricas puras definem espaços integrados e fluidos. A atmosfera é contemporânea e profundamente acolhedora, com a nobreza de um piso em travertino. Um lar atemporal, que une a sofisticação universal à calorosa brasilidade.", images: ["casafa1.webp", "casafa2.webp", "casafa3.webp"] },
+            { id: 2, title: "Apartamento S_F", year: "2025", area: "160m²", local: "Brasília, DF", desc: "Um apartamento que captura a essência de Brasília em uma reforma contemporânea. Linhas limpas e volumetria marcante, definidas pelo concreto aparente, se equilibram com a calidez da madeira. O projeto é uma releitura elegante e moderna do patrimônio modernista, criando um refúgio urbano sofisticado e atemporal.", images: ["apsf1.webp", "apsf2.webp", "apsf3.webp", "apsf4.webp"] },
+            { id: 3, title: "Casa Nero", year: "2023-2025", area: "1381m²", local: "Lago Sul, DF", desc: "A Casa Nero teve em seu conceito a conexão entre a casa e a vista. Criada a partir da visão panorâmica da cidade, integrada a um espaço amplo e aberto.", images: ["nero1.webp", "nero2.webp", "nero3.webp", "nero4.webp", "nero5.webp"] },
+            { id: 4, title: "Casa R_V", year: "2026", area: "761m²", local: "Brasília, DF", desc: "A Casa R_V dissolve os limites entre o habitar interior e a natureza. A madeira aquece cada superfície vertical enquanto as grandes esquadrias em vidro abrem o living de pé-direito duplo para a varanda e o jardim — criando um contínuo fluido entre dentro e fora. A escada estrutural, suspensa sobre um jardim interno iluminado, torna-se o coração visual da residência: um gesto arquitetônico que une os dois pavimentos com leveza e precisão.", images: ["varanda-1.webp", "varanda-2.webp", "fachada-principal-2.webp", "escada.webp", "converse.webp"] },
+            { id: 5, title: "Casa L_G", year: "2025", area: "1.085m²", local: "Brasília, DF", desc: "A Casa L_G foi concebida para uma família que vive em grande escala sem abrir mão da intimidade. Com mais de mil metros quadrados, o projeto organiza generosos ambientes de convívio — da sala de estar de pé-direito alto ao home cinema integrado — costurados por uma linguagem arquitetônica coesa, onde a madeira, a pedra e o vidro dialogam com a paisagem brasiliense.", images: ["casa-lg-2.webp", "casa-lg-1.webp", "casa-lg-3.webp", "casa-lg-4.webp"] },
+            { id: 6, title: "Casa C_R", year: "2025", area: "626m²", local: "Brasília, DF", desc: "A Casa C_R explora a horizontalidade como princípio compositivo. Térrea e integrada ao lote, a residência se abre para o jardim através de grandes esquadrias que dissolvem a fronteira entre a varanda coberta e os ambientes internos. A fachada revestida em réguas de madeira cria uma textura contínua que dialoga com a vegetação exuberante — garantindo privacidade sem impor barreiras.", images: ["casa-cr-3.webp", "casa-cr-4.webp", "casa-cr-1.webp", "casa-cr-2.webp"] },
+            { id: 7, title: "Casa P_M", year: "2025", area: "1.059m²", local: "Brasília, DF", desc: "A Casa P_M marca presença pela audácia de sua entrada: uma laje curva e generosa enquadra o acesso como uma escultura habitável. O restante da composição se abre sobre o jardim com leveza — grandes planos envidraçados revelam o interior e conectam as áreas de lazer ao verde exuberante do lote, com piscina, deck e quadra integrados à paisagem.", images: ["01scene-12-1.webp", "01scene-14-1.webp", "01scene-6-2.webp", "01scene-15-1.webp"] },
+            { id: 8, title: "Spa R_T", year: "2025", area: "704m²", local: "Brasília, DF", desc: "O Spa R_T é um projeto comercial concebido como um santuário urbano. Madeira, pedra e água organizam os ambientes em torno de uma experiência sensorial contínua — da piscina coberta por tela tensionada ao corredor de pedra viva com vegetação emoldurada pela luz. Um espaço onde a arquitetura trabalha ativamente pelo bem-estar de quem o frequenta.", images: ["spaa-3.webp", "spaa-1.webp", "spaa-5.webp", "spaa-2.webp", "spaa-4.webp"] },
+            { id: 9, title: "Guarita 05_27", year: "2025", area: "", local: "Brasília, DF", desc: "A Guarita 05_27 redefine a primeira impressão do condomínio. O concreto aparente combina-se a uma estrutura metálica rigorosa, temperada pela exuberância da vegetação — incluindo uma pérgola coberta por buganvílias que transforma o acesso em uma experiência sensorial. Seriedade formal e hospitalidade em equilíbrio.", images: ["guartia-1.webp", "guartia-4.webp", "guartia-2.webp", "guartia-3.webp"] }
+        ];
+
+        /* --- NAVEGAÇÃO --- */
+        const mainContent = document.getElementById('main-content');
+        const portfolioView = document.getElementById('portfolio-view');
+        const projectPage = document.getElementById('project-page');
+        const budgetView = document.getElementById('budget-view');
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                nav.classList.toggle('nav-active');
+                burger.classList.toggle('toggle');
+            });
+        }
+        function closeMobileMenu() {
+            if (nav.classList.contains('nav-active')) {
+                nav.classList.remove('nav-active');
+                burger.classList.remove('toggle');
+            }
+        }
+
+        function resetToTop() {
+            mainContent.style.display = 'block';
+            portfolioView.style.display = 'none';
+            projectPage.style.display = 'none';
+            budgetView.style.display = 'none';
+            window.scrollTo(0, 0);
+            closeMobileMenu();
+        }
+
+        function showPortfolio() {
+            mainContent.style.display = 'none';
+            projectPage.style.display = 'none';
+            budgetView.style.display = 'none';
+            portfolioView.style.display = 'block';
+            window.scrollTo(0, 0);
+            closeMobileMenu();
+        }
+
+        function showBudget() {
+            mainContent.style.display = 'none';
+            projectPage.style.display = 'none';
+            portfolioView.style.display = 'none';
+            budgetView.style.display = 'block';
+            window.scrollTo(0, 0);
+            closeMobileMenu();
+        }
+
+        function goToSection(sectionId) {
+            if (mainContent.style.display === 'none') {
+                mainContent.style.display = 'block';
+                portfolioView.style.display = 'none';
+                projectPage.style.display = 'none';
+                budgetView.style.display = 'none';
+            }
+            closeMobileMenu();
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if (section) { section.scrollIntoView({ behavior: 'smooth' }); }
+            }, 50);
+        }
+
+        function openProject(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+            document.getElementById('p-title').innerText = project.title;
+            document.getElementById('p-year').innerText = project.year;
+            document.getElementById('p-area').innerText = project.area;
+            document.getElementById('p-local').innerText = project.local;
+            document.getElementById('p-desc').innerText = project.desc;
+            const galleryContainer = document.getElementById('p-gallery');
+            galleryContainer.innerHTML = '';
+            project.images.forEach(imgUrl => {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = project.title;
+                img.style.animation = "fadeInImg 0.8s ease-out";
+                galleryContainer.appendChild(img);
+            });
+            window.scrollTo(0, 0);
+            mainContent.style.display = 'none';
+            portfolioView.style.display = 'none';
+            budgetView.style.display = 'none';
+            projectPage.style.display = 'block';
+            closeMobileMenu();
+        }
+
+        function closeProject() { showPortfolio(); }
+    </script>
+</body>
+</html>
