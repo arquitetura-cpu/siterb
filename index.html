@@ -607,31 +607,34 @@
             }
         }
 
-        function resetToTop() {
+        function resetToTop(push = true) {
             mainContent.style.display = 'block';
             portfolioView.style.display = 'none';
             projectPage.style.display = 'none';
             budgetView.style.display = 'none';
             window.scrollTo(0, 0);
             closeMobileMenu();
+            if (push) history.pushState({ view: 'home' }, '', location.pathname);
         }
 
-        function showPortfolio() {
+        function showPortfolio(push = true) {
             mainContent.style.display = 'none';
             projectPage.style.display = 'none';
             budgetView.style.display = 'none';
             portfolioView.style.display = 'block';
             window.scrollTo(0, 0);
             closeMobileMenu();
+            if (push) history.pushState({ view: 'portfolio' }, '', '#portfolio');
         }
 
-        function showBudget() {
+        function showBudget(push = true) {
             mainContent.style.display = 'none';
             projectPage.style.display = 'none';
             portfolioView.style.display = 'none';
             budgetView.style.display = 'block';
             window.scrollTo(0, 0);
             closeMobileMenu();
+            if (push) history.pushState({ view: 'budget' }, '', '#orcamento');
         }
 
         function goToSection(sectionId) {
@@ -640,6 +643,7 @@
                 portfolioView.style.display = 'none';
                 projectPage.style.display = 'none';
                 budgetView.style.display = 'none';
+                history.pushState({ view: 'home' }, '', location.pathname);
             }
             closeMobileMenu();
             setTimeout(() => {
@@ -648,7 +652,7 @@
             }, 50);
         }
 
-        function openProject(projectId) {
+        function openProject(projectId, push = true) {
             const project = projectsData.find(p => p.id === projectId);
             if (!project) return;
             document.getElementById('p-title').innerText = project.title;
@@ -671,9 +675,28 @@
             budgetView.style.display = 'none';
             projectPage.style.display = 'block';
             closeMobileMenu();
+            if (push) history.pushState({ view: 'project', id: projectId }, '', '#projeto-' + projectId);
         }
 
         function closeProject() { showPortfolio(); }
+
+        /* --- HISTÓRICO DO NAVEGADOR (BOTÃO VOLTAR) --- */
+        window.addEventListener('popstate', function (e) {
+            const state = e.state;
+            if (!state || state.view === 'home') {
+                resetToTop(false);
+            } else if (state.view === 'portfolio') {
+                showPortfolio(false);
+            } else if (state.view === 'budget') {
+                showBudget(false);
+            } else if (state.view === 'project') {
+                openProject(state.id, false);
+            }
+        });
+
+        if (!history.state) {
+            history.replaceState({ view: 'home' }, '', location.pathname + location.hash);
+        }
     </script>
 </body>
 </html>
